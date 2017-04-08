@@ -1,15 +1,13 @@
 <?php
 include_once 'inc/register.inc.php';
-include_once 'inc/functions.inc.php';
+include_once 'inc/loginfunction.inc.php';
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>Secure Login: Registration Form</title>
-        <script type="text/JavaScript" src="js/sha512.js"></script> 
-        <script type="text/JavaScript" src="js/forms.js"></script>
-        <link rel="stylesheet" href="styles/main.css" />
+        <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
         <!-- Anmeldeformular für die Ausgabe, wenn die POST-Variablen nicht gesetzt sind
@@ -46,13 +44,8 @@ include_once 'inc/functions.inc.php';
             Confirm password: <input type="password" 
                                      name="confirmpwd" 
                                      id="confirmpwd" /><br>
-            <input type="button" 
-                   value="Register" 
-                   onclick="return regformhash(this.form,
-                                   this.form.username,
-                                   this.form.email,
-                                   this.form.password,
-                                   this.form.confirmpwd);" /> 
+            <input type="submit" 
+                   value="Register" /> 
         </form>
         <p>Return to the <a href="index.php">login page</a>.</p>
     </body>

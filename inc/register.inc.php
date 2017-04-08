@@ -1,5 +1,5 @@
 <?php
-include "dbfunction.inc.php";
+
  
 $error_msg = "";
  

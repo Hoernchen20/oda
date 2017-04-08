@@ -36,7 +36,7 @@ sec_session_start();
             PrintOverview($_GET);
         }
       } else {
-        echo '<p><a href="login.php">Bitte einlogen</a></p>';
+         header('Location: login.php');
       }
       ?>
       <div id="footer">

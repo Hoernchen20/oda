@@ -32,7 +32,7 @@ if(isset($_GET['login'])) {
 <html>
     <head>
         <title>Secure Login: Log In</title>
-        <link rel="stylesheet" href="styles/main.css" />
+        <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
         <?php

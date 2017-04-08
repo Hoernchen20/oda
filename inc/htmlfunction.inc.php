@@ -145,6 +145,7 @@ function PrintOverview($Get) {
 			  <li><a href="index.php?user=' . $GetUser . '&amp;site=uploadone">Upload</a></li>
 			  <li><a href="index.php?user=' . $GetUser . '&amp;site=search">Suchen</a></li>
 			  <li><a href="index.php?user=' . $GetUser . '&amp;site=settings">Einstellungen</a></li>
+			  <li><a href="logout.php">Logout</a></li>
 			</ul>
 		  </div>
 		  <div id="navigation">';
@@ -172,6 +173,7 @@ function PrintUploadTopNavigation($UserID) {
 			  <li><a class="active">Upload</a></li>
 			  <li><a href="index.php?user=' . $UserID . '&amp;site=search">Suchen</a></li>
 			  <li><a href="index.php?user=' . $UserID . '&amp;site=settings">Einstellungen</a></li>
+			  <li><a href="logout.php">Logout</a></li>
 			</ul>
 		  </div>';
 }
@@ -251,6 +253,7 @@ function PrintSearch($Get) {
 			  <li><a href="index.php?user=' . $GetUser . '&amp;site=uploadone">Upload</a></li>
 			  <li><a class="active">Suchen</a></li>
 			  <li><a href="index.php?user=' . $GetUser . '&amp;site=settings">Einstellungen</a></li>
+			  <li><a href="logout.php">Logout</a></li>
 			</ul>
 		  </div>
 		  <div id="navigation">
@@ -271,6 +274,7 @@ function PrintSettings($Get) {
 			  <li><a href="index.php?user=' . $GetUser . '&amp;site=uploadone">Upload</a></li>
 			  <li><a href="index.php?user=' . $GetUser . '&amp;site=search">Suchen</a></li>
 			  <li><a class="active">Einstellungen</a></li>
+			  <li><a href="logout.php">Logout</a></li>
 			</ul>
 		  </div>
 		  <div id="navigation">
