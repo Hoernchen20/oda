@@ -1,5 +1,5 @@
 <?php
-include "inc/functions.inc.php";
+include "inc/loginfunction.inc.php";
 include "inc/htmlfunction.inc.php";
 sec_session_start();
 ?>

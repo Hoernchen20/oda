@@ -1,5 +1,4 @@
 <?php
-include "dbconnect.inc.php";
 include "dbfunction.inc.php";
 
 define("CAN_REGISTER", "any");
@@ -32,7 +31,6 @@ function sec_session_start() {
 
 function login($email, $password) {
     $UserData = GetUserData($email);
- //   var_dump($UserData);
 
     if ( $UserData != NULL ) {
         // Wenn es den Benutzer gibt, dann wird überprüft ob das Konto

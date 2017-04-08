@@ -1,6 +1,6 @@
 <?php
-include_once 'inc/functions.inc.php';
- 
+include_once 'inc/loginfunction.inc.php';
+
 sec_session_start();
  
 if (login_check() == true) {
@@ -8,6 +8,25 @@ if (login_check() == true) {
 } else {
     $logged = 'out';
 }
+
+if(isset($_GET['login'])) {
+  if (isset($_POST['email'], $_POST['password'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password']; // Das gehashte Passwort.
+ 
+    if (login($email, $password) == true) {
+      // Login erfolgreich 
+      header('Location: index.php');
+    } else {
+      // Login fehlgeschlagen 
+      header('Location: login.php?error=1');
+    }
+  } else {
+    // Die korrekten POST-Variablen wurden nicht zu dieser Seite geschickt. 
+    echo 'Invalid Request';
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +40,7 @@ if (login_check() == true) {
             echo '<p class="error">Error Logging In!</p>';
         }
         ?> 
-        <form action="inc/process_login.php" method="post" name="login_form">                      
+        <form action="?login=1" method="post" name="login_form">                      
             Email: <input type="text" name="email" />
             Password: <input type="password" 
                              name="password" 
