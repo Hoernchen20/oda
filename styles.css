@@ -1,0 +1,154 @@
+html,body {
+    margin:0px;
+    padding:0px;
+    height: 100%;
+}
+
+body{font: 76% arial,sans-serif;text-align:center}
+p{margin:0 10px 10px}
+a{padding:5px; text-decoration:none; color:#000000;}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+div#header {
+    font-size: 20px;
+}
+
+div#header ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;    
+}
+
+div#header li {
+    float: left;
+}
+
+div#header li.logo {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+div#header li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+div#header a:hover:not(.active) {
+    background-color: #111;
+}
+
+div#header .active {
+    background-color:#4CAF50;
+}
+
+div#container {
+    width:100%;
+    margin:0 auto;
+    text-align:left;
+    height:100%;
+}
+
+div#content {
+    float:right;
+    width:80%
+}
+
+div#content p {
+    line-height:1.4;
+}
+
+div#content table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+div#content table td, div#content table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+div#content table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+div#content table tr:hover {
+    background-color: #ddd;
+}
+
+div#content table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+div#navigation {
+    background:#F0F0F0;
+    float:left;
+    width:20%;
+    min-height: 100%;
+    height: auto !important;
+}
+
+div#navigation ul {
+    margin:0;
+    padding:0;
+    list-style-type:none;
+}
+
+div#navigation li {
+    margin-bottom:0px;
+}
+
+div#navigation li a {
+    display: block;
+    text-decoration: none;
+}
+
+div#navigation li a:hover:not(.active) {
+    background-color: #ADADAD;
+}
+
+div#navigation .active {
+    background-color:#ABABAB;
+}
+
+div#extra{background:#CCC8B3;}
+
+div#extra{float:right;width:75%}
+
+div#footer {
+    position: fixed;
+    bottom: 0;
+    width:100%;
+    clear:both;
+    background-color: #f0f0f0;
+}
+
+div#footer p {
+    margin:0;
+    padding:5px 10px;
+    text-align: right;
+}

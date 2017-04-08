@@ -95,9 +95,7 @@ function login_check() {
         
         if ($UserData != NULL) {
             $login_check = hash('sha512', $UserData->password . $user_browser);
-            echo $_SESSION['login_string'] . "<br>";
-            echo $login_check;
-            
+
             if ($login_check == $login_string) {
                 // Eingeloggt!!!! 
                 return true;
