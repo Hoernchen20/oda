@@ -24,6 +24,26 @@
 
 include "dbconnect.inc.php";
 
+function AddUser($UserData) {
+  /*
+   * $UserData['FirstName']
+   * $UserData['LastName']
+   * $UserData['email']
+   * $UserData['password']
+   */
+   
+  global $client;
+  $collection = $client->oda->selectCollection('users');
+  //TODO add to database
+
+  if($query != NULL) {
+    //if everything fine, return ObjectID of new User
+    return $query;
+  } else {
+    return false;
+  }
+}
+
 function GetUserData($user_email) {
     global $client;
     $collection = $client->oda->selectCollection('users');

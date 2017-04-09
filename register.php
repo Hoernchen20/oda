@@ -5,6 +5,8 @@ if(isset($_GET['register'])) {
   $error_msg = "";
  
   if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
+    //TODO add array for function 'AddUser'
+    
     // Bereinige und überprüfe die Daten
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -15,7 +17,8 @@ if(isset($_GET['register'])) {
     }
  
     $password = filter_input(INPUT_POST, 'p', FILTER_SANITIZE_STRING);
-    if (strlen($password) != 128) {
+    $password = password_hash($password, PASSWORD_DEFAULT);
+    if (strlen($password) < 60) {
       // Das gehashte Passwort sollte 128 Zeichen lang sein.
       // Wenn nicht, dann ist etwas sehr seltsames passiert
       $error_msg .= '<p class="error">Invalid password configuration.</p>';
@@ -24,22 +27,12 @@ if(isset($_GET['register'])) {
     // Benutzername und Passwort wurde auf der Benutzer-Seite schon überprüft.
     // Das sollte genügen, denn niemand hat einen Vorteil, wenn diese Regeln   
     // verletzt werden.
-    //
- 
-    $prep_stmt = "SELECT id FROM members WHERE email = ? LIMIT 1";
-    $stmt = $mysqli->prepare($prep_stmt);
- 
-    if ($stmt) {
-      $stmt->bind_param('s', $email);
-      $stmt->execute();
-      $stmt->store_result();
-
-      if ($stmt->num_rows == 1) {
-          // Ein Benutzer mit dieser E-Mail-Adresse existiert schon
-          $error_msg .= '<p class="error">A user with this email address already exists.</p>';
-      }
-    } else {
-      $error_msg .= '<p class="error">Database error</p>';
+    
+    
+    //Check if email exist
+    if (GetUserData($email) != NULL) {
+      // Ein Benutzer mit dieser E-Mail-Adresse existiert schon
+      $error_msg .= '<p class="error">A user with this email address already exists.</p>';
     }
  
     // Noch zu tun: 
@@ -48,13 +41,10 @@ if(isset($_GET['register'])) {
     // von Benutzer versucht diese Operation durchzuführen.
  
     if (empty($error_msg)) {
-      // Erstelle ein zufälliges Salt
-      $random_salt = hash('sha512', uniqid(openssl_random_pseudo_bytes(16), TRUE));
-
-      // Erstelle saltet Passwort 
-      $password = hash('sha512', $password . $random_salt);
-
-      // Trage den neuen Benutzer in die Datenbank ein 
+      // Trage den neuen Benutzer in die Datenbank ein
+      AddUser($UserData);
+      
+      
       if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
         $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
         // Führe die vorbereitete Anfrage aus.
@@ -72,6 +62,8 @@ if(isset($_GET['register'])) {
   <head>
     <meta charset="UTF-8">
     <title>Secure Login: Registration Form</title>
+    <script type="text/JavaScript" src="js/sha512.js"></script> 
+    <script type="text/JavaScript" src="js/forms.js"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -96,13 +88,13 @@ if(isset($_GET['register'])) {
       </li>
       <li>Das Passwort und die Bestätigung müssen exakt übereinstimmen.</li>
     </ul>
-    <form action="<?php echo esc_url($_SERVER['PHP_SELF']); ?>" method="post" name="registration_form">
+    <form action="?register=1" method="post" name="registration_form">
       Username: <input type='text' name='username' id='username' /><br>
       Email: <input type="text" name="email" id="email" /><br>
       Password: <input type="password" name="password" id="password"/><br>
       Confirm password: <input type="password" name="confirmpwd" id="confirmpwd" /><br>
-      <input type="submit" value="Register" /> 
+      <input type="button" value="Register" onclick="return regformhash(this.form, this.form.username, this.form.email, this.form.password, this.form.confirmpwd);" /> 
     </form>
-    <p>Return to the <a href="index.php">login page</a>.</p>
+    <p>Return to the <a href="login.php">login page</a>.</p>
   </body>
 </html>

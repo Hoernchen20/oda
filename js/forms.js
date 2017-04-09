@@ -67,7 +67,7 @@ function regformhash(form, uid, email, password, conf) {
     form.appendChild(p);
     p.name = "p";
     p.type = "hidden";
-    p.value = hex_sha512(password.value);
+    p.value = password.value;
  
     // Sorge dafür, dass kein Text-Passwort geschickt wird. 
     password.value = "";
