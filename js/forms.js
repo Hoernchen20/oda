@@ -15,23 +15,25 @@ function formhash(form, password) {
     form.submit();
 }
  
-function regformhash(form, uid, email, password, conf) {
+function regformhash(form, firstname, lastname, email, password, conf) {
      // Überprüfe, ob jedes Feld einen Wert hat
-    if (uid.value == ''         || 
-          email.value == ''     || 
-          password.value == ''  || 
-          conf.value == '') {
- 
+    if (firstname.value == '' || lastname.value == '' || email.value == '' || password.value == '' || conf.value == '') {
         alert('You must provide all the requested details. Please try again');
         return false;
     }
  
-    // Überprüfe den Benutzernamen
- 
+    // Überprüfe die Namen
     re = /^\w+$/; 
-    if(!re.test(form.username.value)) { 
-        alert("Username must contain only letters, numbers and underscores. Please try again"); 
-        form.username.focus();
+    if(!re.test(form.firstname.value)) { 
+        alert("First name must contain only letters, numbers and underscores. Please try again"); 
+        form.firstname.focus();
+        return false; 
+    }
+    
+    re = /^\w+$/; 
+    if(!re.test(form.lastname.value)) { 
+        alert("Last name must contain only letters, numbers and underscores. Please try again"); 
+        form.lastname.focus();
         return false; 
     }
  

@@ -34,11 +34,12 @@ function AddUser($UserData) {
    
   global $client;
   $collection = $client->oda->selectCollection('users');
-  //TODO add to database
+  $query = $collection->insertOne(['firstname' => $UserData['FirstName'], 'lastname' => $UserData['LastName'], 'email' => $UserData['email'] , 'password' => $UserData['password']]);
 
-  if($query != NULL) {
+  if($query->getInsertedCount == 1) {
     //if everything fine, return ObjectID of new User
-    return $query;
+    $ID = $query->getInsertedID();
+    return $ID['oid'];
   } else {
     return false;
   }

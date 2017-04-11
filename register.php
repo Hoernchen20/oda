@@ -4,21 +4,24 @@ include_once 'inc/loginfunction.inc.php';
 if(isset($_GET['register'])) {
   $error_msg = "";
  
-  if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
+  if (isset($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['p'])) {
     //TODO add array for function 'AddUser'
+    $UserData[] = array();
     
     // Bereinige und überprüfe die Daten
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $UserData['FirstName'] = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
+    $UserData['LastName'] = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
+    
+    $UserData['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $UserData['email'] = filter_var($UserData['email'], FILTER_VALIDATE_EMAIL);
+    if (!filter_var($UserData['email'], FILTER_VALIDATE_EMAIL)) {
       // keine gültige E-Mail
       $error_msg .= '<p class="error">The email address you entered is not valid</p>';
     }
  
-    $password = filter_input(INPUT_POST, 'p', FILTER_SANITIZE_STRING);
-    $password = password_hash($password, PASSWORD_DEFAULT);
-    if (strlen($password) < 60) {
+    $UserData['password'] = filter_input(INPUT_POST, 'p', FILTER_SANITIZE_STRING);
+    $UserData['password'] = password_hash($UserData['password'], PASSWORD_DEFAULT);
+    if (strlen($UserData['password']) < 60) {
       // Das gehashte Passwort sollte 128 Zeichen lang sein.
       // Wenn nicht, dann ist etwas sehr seltsames passiert
       $error_msg .= '<p class="error">Invalid password configuration.</p>';
@@ -42,19 +45,14 @@ if(isset($_GET['register'])) {
  
     if (empty($error_msg)) {
       // Trage den neuen Benutzer in die Datenbank ein
-      AddUser($UserData);
-      
-      
-      if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
-        $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
-        // Führe die vorbereitete Anfrage aus.
-        if (! $insert_stmt->execute()) {
-          header('Location: ../error.php?err=Registration failure: INSERT');
-        }
+      if (AddUser($UserData) != false) {
+        header('Location: login.php');
+      } else {
+        header('Location: ../error.php?err=Registration failure: INSERT');
       }
-      header('Location: ./register_success.php');
     }
   }
+}
 
 ?>
 <!DOCTYPE html>
@@ -89,11 +87,12 @@ if(isset($_GET['register'])) {
       <li>Das Passwort und die Bestätigung müssen exakt übereinstimmen.</li>
     </ul>
     <form action="?register=1" method="post" name="registration_form">
-      Username: <input type='text' name='username' id='username' /><br>
+      Vorname: <input type="text" name="firstname" id="firstname" /><br>
+      Nachname: <input type="text" name="lastname" id="lastname" /><br>
       Email: <input type="text" name="email" id="email" /><br>
       Password: <input type="password" name="password" id="password"/><br>
       Confirm password: <input type="password" name="confirmpwd" id="confirmpwd" /><br>
-      <input type="button" value="Register" onclick="return regformhash(this.form, this.form.username, this.form.email, this.form.password, this.form.confirmpwd);" /> 
+      <input type="button" value="Register" onclick="return regformhash(this.form, this.form.firstname, this.form.lastname, this.form.email, this.form.password, this.form.confirmpwd);" /> 
     </form>
     <p>Return to the <a href="login.php">login page</a>.</p>
   </body>
