@@ -34,23 +34,27 @@ function AddUser($UserData) {
    
   global $client;
   $collection = $client->oda->selectCollection('users');
-  $query = $collection->insertOne(['firstname' => $UserData['FirstName'], 'lastname' => $UserData['LastName'], 'email' => $UserData['email'] , 'password' => $UserData['password']]);
+  $query = $collection->insertOne(['firstname' => $UserData['FirstName'], 'lastname' => $UserData['LastName'], 'email' => $UserData['email'] , 'password' => $UserData['password'], 'added' => new MongoDB\BSON\UTCDateTime(), 'user' => TRUE]);
 
-  if($query->getInsertedCount == 1) {
+  if($query->getInsertedCount() == 1) {
     //if everything fine, return ObjectID of new User
     $ID = $query->getInsertedID();
-    return $ID['oid'];
+    return $ID;
   } else {
     return false;
   }
 }
 
 function GetUserData($user_email) {
-    global $client;
-    $collection = $client->oda->selectCollection('users');
-    $query = $collection->findOne(['email' => $user_email]);
+  global $client;
+  $collection = $client->oda->selectCollection('users');
+  $query = $collection->findOne(['email' => $user_email]);
 
+  if($query == 'NULL') {
+    return false;
+  } else {
     return $query;
+  }
 }
 
 function GetUserPassword($user_id) {

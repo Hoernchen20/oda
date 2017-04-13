@@ -33,7 +33,7 @@ if(isset($_GET['register'])) {
     
     
     //Check if email exist
-    if (GetUserData($email) != NULL) {
+    if (GetUserData($UserData['email']) != false) {
       // Ein Benutzer mit dieser E-Mail-Adresse existiert schon
       $error_msg .= '<p class="error">A user with this email address already exists.</p>';
     }
