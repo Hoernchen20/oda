@@ -14,6 +14,7 @@ if(isset($_GET['register'])) {
     
     $UserData['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $UserData['email'] = filter_var($UserData['email'], FILTER_VALIDATE_EMAIL);
+    $UserData['email'] = mb_strtolower($UserData['email'], 'UTF-8');
     if (!filter_var($UserData['email'], FILTER_VALIDATE_EMAIL)) {
       // keine gültige E-Mail
       $error_msg .= '<p class="error">The email address you entered is not valid</p>';

@@ -11,7 +11,7 @@ if (login_check() == true) {
 
 if(isset($_GET['login'])) {
   if (isset($_POST['email'], $_POST['password'])) {
-    $email = $_POST['email'];
+    $email = mb_strtolower($_POST['email'], 'UTF-8');
     $password = $_POST['password']; // Das gehashte Passwort.
  
     if (login($email, $password) == true) {
