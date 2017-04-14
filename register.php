@@ -56,45 +56,50 @@ if(isset($_GET['register'])) {
 }
 
 ?>
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
     <meta charset="UTF-8">
     <title>Secure Login: Registration Form</title>
     <script type="text/JavaScript" src="js/sha512.js"></script> 
     <script type="text/JavaScript" src="js/forms.js"></script>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <!-- Anmeldeformular für die Ausgabe, wenn die POST-Variablen nicht gesetzt sind
-    oder wenn das Anmelde-Skript einen Fehler verursacht hat. -->
-    <h1>Register with us</h1>
-    <?php
-    if (!empty($error_msg)) {
-      echo $error_msg;
-    }
-    ?>
-    <ul>
-      <li>Benutzernamen dürfen nur Ziffern, Groß- und Kleinbuchstaben und Unterstriche enthalten.</li>
-      <li>E-Mail-Adressen müssen ein gültiges Format haben.</li>
-      <li>Passwörter müssen mindest sechs Zeichen lang sein.</li>
-      <li>Passwörter müssen enthalten
+    <div class="login-page">
+      <div class="form">
+        <!-- Anmeldeformular für die Ausgabe, wenn die POST-Variablen nicht gesetzt sind
+        oder wenn das Anmelde-Skript einen Fehler verursacht hat. -->
+        <?php
+        if (!empty($error_msg)) {
+          echo $error_msg;
+        }
+        ?>
+        <!--
         <ul>
-          <li>mindestens einen Großbuchstaben (A..Z)</li>
-          <li>mindestens einen Kleinbuchstabenr (a..z)</li>
-          <li>mindestens eine Ziffer (0..9)</li>
+          <li>Benutzernamen dürfen nur Ziffern, Groß- und Kleinbuchstaben und Unterstriche enthalten.</li>
+          <li>E-Mail-Adressen müssen ein gültiges Format haben.</li>
+          <li>Passwörter müssen mindest sechs Zeichen lang sein.</li>
+          <li>Passwörter müssen enthalten
+            <ul>
+              <li>mindestens einen Großbuchstaben (A..Z)</li>
+              <li>mindestens einen Kleinbuchstabenr (a..z)</li>
+              <li>mindestens eine Ziffer (0..9)</li>
+            </ul>
+          </li>
+          <li>Das Passwort und die Bestätigung müssen exakt übereinstimmen.</li>
         </ul>
-      </li>
-      <li>Das Passwort und die Bestätigung müssen exakt übereinstimmen.</li>
-    </ul>
-    <form action="?register=1" method="post" name="registration_form">
-      Vorname: <input type="text" name="firstname" id="firstname" /><br>
-      Nachname: <input type="text" name="lastname" id="lastname" /><br>
-      Email: <input type="text" name="email" id="email" /><br>
-      Password: <input type="password" name="password" id="password"/><br>
-      Confirm password: <input type="password" name="confirmpwd" id="confirmpwd" /><br>
-      <input type="button" value="Register" onclick="return regformhash(this.form, this.form.firstname, this.form.lastname, this.form.email, this.form.password, this.form.confirmpwd);" /> 
-    </form>
-    <p>Return to the <a href="login.php">login page</a>.</p>
+        -->
+        <form class="login-form" action="?register=1" method="post" name="registration_form">
+          <input type="text" name="firstname" id="firstname" placeholder="Vorname">
+          <input type="text" name="lastname" id="lastname" placeholder="Nachname">
+          <input type="text" name="email" id="email" placeholder="email">
+          <input type="password" name="password" id="password" placeholder="Password">
+          <input type="password" name="confirmpwd" id="confirmpwd" placeholder="Confirm Password">
+          <input type="button" value="Register" onclick="return regformhash(this.form, this.form.firstname, this.form.lastname, this.form.email, this.form.password, this.form.confirmpwd);">
+          <p class="message">Already registered? <a href="login.php">Sign In</a></p>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
