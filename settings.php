@@ -17,7 +17,7 @@ sec_session_start();
       if(login_check() == false) {        
         header('Location: login.php');
       } else {
-        PrintTopNavigation("search");
+        PrintTopNavigation("settings");
         echo '<div id="navigation">
 		<ul>
 		  <li>Platzhalter</li>
