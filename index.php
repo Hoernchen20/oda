@@ -14,29 +14,28 @@ sec_session_start();
   <body>
     <div id="container">
       <?php 
-      if(login_check() == true) {        
-        switch($_GET['site']) {
-          case "uploadone":
-            PrintUploadOneSite();
-            break;
-          case "uploadmulti":
-            PrintUploadMultiSite($_GET);
-            break;
-          case "uploadlast":
-            PrintUploadLastSite($_GET);
-            break;
-          case "search":
-            PrintSearch($_GET);
-            break;
-          case "settings":
-            PrintSettings($_GET);
-            break;
-          case "overview":
-          default:
-            PrintOverview($_GET);
-        }
+      if(login_check() == false) {
+        header('Location: login.php');
       } else {
-         header('Location: login.php');
+        PrintTopNavigation("overview"):
+        $UserCategories = GetUserCategories($_SESSION['user_id']);
+        $ShareCategories = GetShareCategories($_SESSION['user_id']);
+        $SelectCategorie = $_GET['categorie'];
+
+        echo '<div id="navigation">';
+        
+        PrintCategorieBar($UserCategories);
+        PrintCategorieBar($ShareCategories);
+        
+        echo '</div>
+          <div id="wrapper">
+            <div id="content">
+              <div style="overflow-x:auto">';
+        PrintDocumentTable($_SESSION['user_id'], $SelectCategorie);
+        echo '</table>
+            </div>
+          </div>
+        </div>';
       }
       ?>
       <div id="footer">

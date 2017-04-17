@@ -131,82 +131,36 @@ function PrintDocumentTable($UserID, $Categorie) {
   }
 }
 
-function PrintOverview() {
-  $UserCategories = GetUserCategories($_SESSION['user_id']);
-  $ShareCategories = GetShareCategories($_SESSION['user_id']);
-  $SelectCategorie = $_GET['categorie'];
-
+function PrintTopNavigation($ActiveMenu){
   echo '<div id="header">
 	  <ul>
-	    <li class="logo">OpenDocumentArchiv</li>
-	    <li><a class="active">Übersicht</a></li>
-	    <li><a href="index.php?site=uploadone">Upload</a></li>
-	    <li><a href="index.php?site=search">Suchen</a></li>
-	    <li><a href="index.php?site=settings">Einstellungen</a></li>
-	    <li><a href="logout.php">Logout</a></li>
-	  </ul>
-	</div>
-	<div id="navigation">';
+	    <li class="logo">OpenDocumentArchiv</li>';
   
-  PrintCategorieBar($UserCategories);
-  PrintCategorieBar($ShareCategories);
-	
-  echo '</div>
-	  <div id="wrapper">
-	    <div id="content">
-	      <div style="overflow-x:auto">';
-  PrintDocumentTable($_SESSION['user_id'], $SelectCategorie);
-  echo '</table>
-      </div>
-    </div>
-  </div>';
-}
-
-function PrintUploadTopNavigation() {
-  echo '<div id="header">
-	  <ul>
-	    <li class="logo">OpenDocumentArchiv</li>
-	    <li><a href="index.php?site=overview">Übersicht</a></li>
-	    <li><a class="active">Upload</a></li>
-	    <li><a href="index.php?site=search">Suchen</a></li>
-	    <li><a href="index.php?site=settings">Einstellungen</a></li>
-	    <li><a href="logout.php">Logout</a></li>
-	  </ul>
-	</div>';
-}
-
-function PrintUploadOneSite() {
-  PrintUploadTopNavigation();
-		
-  echo '<div id="navigation">
-	  <ul>
-	    <li><a class="active">Einzel Upload</a></li>
-	    <li><a href="index.php?site=uploadmulti">Multi Upload</a></li>
-	    <li><a href="index.php?site=uploadlast">Letzen 10 Uploads</a></li>
-	  </ul>
-	</div>';
-  if (!empty($_FILES)) {
-	  SaveOneDocument($_POST);
+  if ($ActiveManu = "upload") {
+    echo '<li><a href="index.php">Übersicht</a></li>
+	  <li><a class="active">Upload</a></li>
+	  <li><a href="search.php">Suchen</a></li>
+	  <li><a href="settings.php">Einstellungen</a></li>';
+  } else if ($ActiveMenu = "search") {
+    echo '<li><a href="index.php">Übersicht</a></li>
+	  <li><a href="upload-one.php">Upload</a></li>
+	  <li><a class="active">Suchen</a></li>
+	  <li><a href="settings.php">Einstellungen</a></li>';
+  } else if ($ActiveMenu = "settings") {
+    echo '<li><a href="index.php">Übersicht</a></li>
+	  <li><a href="upload-one.php">Upload</a></li>
+	  <li><a href="search.php">Suchen</a></li>
+	  <li><a class="active">Einstellungen</a></li>;'
+  } else { //overview
+    echo '<li><a class="active">Übersicht</a></li>
+	  <li><a href="upload-one.php">Upload</a></li>
+	  <li><a href="search.php">Suchen</a></li>
+	  <li><a href="settings.php">Einstellungen</a></li>';
   }
-  echo '<div id="wrapper">
-	  <div id="content">
-	    <form action="#" method="post" enctype="multipart/form-data">
-	      <label for="title" >Titel</label>
-	      <input type="text" id="title" name="title">
-	      <label for="author">Author</label>
-	      <input type="text" id="author" name="author">
-	      <label for="categories">Kategorien</label>
-	      <textarea id ="categories" name="categories"></textarea>
-	      <label for="tags">Tags</label>
-	      <textarea id="tags" name="tags"></textarea>
-	      <label for="share">share</label>
-	      <textarea id="share" name="share"></textarea>
-	      <label for="file">Dateiauswahl</label>
-	      <input type="file" id="file" name="datei">
-	      <input type="submit" value="Hochladen">
-	    </form>
-	  </div>
-	</div>';
+  
+  echo '<li><a href="logout.php">Logout</a></li>
+      </ul>
+    </div>';
 }
 
 function PrintUploadMultiSite() {
@@ -229,44 +183,6 @@ function PrintUploadLastSite() {
 	    <li><a href="index.php?site=uploadone">Einzel Upload</a></li>
 	    <li><a href="index.php?site=uploadmulti">Multi Upload</a></li>
 	    <li><a class="active">Letzen 10 Uploads</a></li>
-	  </ul>
-	</div>';
-}
-
-
-function PrintSearch() {
-  echo '<div id="header">
-	  <ul>
-	    <li class="logo">OpenDocumentArchiv</li>
-	    <li><a href="index.php?site=overview">Übersicht</a></li>
-	    <li><a href="index.php?site=uploadone">Upload</a></li>
-	    <li><a class="active">Suchen</a></li>
-	    <li><a href="index.php?site=settings">Einstellungen</a></li>
-	    <li><a href="logout.php">Logout</a></li>
-	  </ul>
-	</div>
-	<div id="navigation">
-	  <p>Variable Suchkriterien</p>
-	  <ul>
-	    <li>Platzhalter</li>
-	  </ul>
-	</div>';
-}
-
-function PrintSettings() {
-  echo '<div id="header">
-	  <ul>
-	    <li class="logo">OpenDocumentArchiv</li>
-	    <li><a href="index.php?site=overview">Übersicht</a></li>
-	    <li><a href="index.php?site=uploadone">Upload</a></li>
-	    <li><a href="index.php?site=search">Suchen</a></li>
-	    <li><a class="active">Einstellungen</a></li>
-	    <li><a href="logout.php">Logout</a></li>
-	  </ul>
-	</div>
-	<div id="navigation">
-	  <ul>
-	    <li>Platzhalter</li>
 	  </ul>
 	</div>';
 }
