@@ -17,7 +17,7 @@ sec_session_start();
       if(login_check() == true) {        
         switch($_GET['site']) {
           case "uploadone":
-            PrintUploadOneSite($_GET);
+            PrintUploadOneSite();
             break;
           case "uploadmulti":
             PrintUploadMultiSite($_GET);

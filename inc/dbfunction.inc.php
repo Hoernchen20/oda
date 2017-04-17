@@ -125,7 +125,7 @@ function SaveOneDocument($Post) {
   $author = $Post['author'];
   $categories = preg_split('/\r\n|[\r\n]/', $Post['categories']);
   $tags = preg_split('/\r\n|[\r\n]/', $Post['tags']);
-  $owner = new MongoDB\BSON\ObjectID($_GET['user']);
+  $owner = new MongoDB\BSON\ObjectID($_SESSION['user_id']);
   $share = preg_split('/\r\n|[\r\n]/', $Post['share']);
   $lastmodified = ['by' => $owner, 'date' => new MongoDB\BSON\UTCDateTime()];
   $created = ['by' => $owner, 'date' => new MongoDB\BSON\UTCDateTime()];
