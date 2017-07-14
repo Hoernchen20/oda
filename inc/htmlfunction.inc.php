@@ -150,7 +150,7 @@ function PrintTopNavigation($ActiveMenu){
     echo '<li><a href="index.php">Übersicht</a></li>
 	  <li><a href="upload-one.php">Upload</a></li>
 	  <li><a href="search.php">Suchen</a></li>
-	  <li><a class="active">Einstellungen</a></li>;'
+	  <li><a class="active">Einstellungen</a></li>';
   } else { //overview
     echo '<li><a class="active">Übersicht</a></li>
 	  <li><a href="upload-one.php">Upload</a></li>

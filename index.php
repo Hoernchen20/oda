@@ -17,7 +17,7 @@ sec_session_start();
       if(login_check() == false) {
         header('Location: login.php');
       } else {
-        PrintTopNavigation("overview"):
+        PrintTopNavigation("overview");
         $UserCategories = GetUserCategories($_SESSION['user_id']);
         $ShareCategories = GetShareCategories($_SESSION['user_id']);
         $SelectCategorie = $_GET['categorie'];
