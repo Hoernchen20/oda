@@ -117,7 +117,7 @@ function PrintDocumentTable($UserID, $Categorie) {
   /* TODO als schleife ausführen und hinter jede komplette Zeile die _id als link hinterlegen */
   /* TODO Besitzer und Datum als Klartext anzeigen */
   foreach($Documents as $document) {
-//		var_dump($document);
+/*highlight_string("<?php\n\$data =\n" . var_export($document, true) . ";\n?>");*/
     echo '<tr> 
 	    <td>' . $document['metadata']['title'] . '</td>
 	    <td>' . $document['metadata']['author'] . '</td>';
@@ -132,21 +132,22 @@ function PrintDocumentTable($UserID, $Categorie) {
 }
 
 function PrintTopNavigation($ActiveMenu){
+  error_log($ActiveMenu);
   echo '<div id="header">
 	  <ul>
 	    <li class="logo">OpenDocumentArchiv</li>';
   
-  if ($ActiveManu = "upload") {
+  if ($ActiveMenu == "upload") {
     echo '<li><a href="index.php">Übersicht</a></li>
 	  <li><a class="active">Upload</a></li>
 	  <li><a href="search.php">Suchen</a></li>
 	  <li><a href="settings.php">Einstellungen</a></li>';
-  } else if ($ActiveMenu = "search") {
+  } else if ($ActiveMenu == "search") {
     echo '<li><a href="index.php">Übersicht</a></li>
 	  <li><a href="upload-one.php">Upload</a></li>
 	  <li><a class="active">Suchen</a></li>
 	  <li><a href="settings.php">Einstellungen</a></li>';
-  } else if ($ActiveMenu = "settings") {
+  } else if ($ActiveMenu == "settings") {
     echo '<li><a href="index.php">Übersicht</a></li>
 	  <li><a href="upload-one.php">Upload</a></li>
 	  <li><a href="search.php">Suchen</a></li>

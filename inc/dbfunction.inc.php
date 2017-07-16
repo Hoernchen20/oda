@@ -57,6 +57,18 @@ function GetUserData($user_email) {
   }
 }
 
+function GetUserNameById($UserId) {
+  global $client;
+  $collection = $client->oda->selectCollection('users');
+  $query = $collection->findOne(['email' => $user_email]);
+
+  if($query == 'NULL') {
+    return false;
+  } else {
+    return $query;
+  }
+}
+
 function GetUserPassword($user_id) {
     global $client;
     $collection = $client->oda->selectCollection('users');
@@ -101,10 +113,29 @@ function GetShareCategories($user_name) {
 }
 
 function GetDocuments($UserID, $Categorie) {
-    global $client;
-    $collection = $client->oda->selectCollection('documents.files');
+  global $client;
+  $collection = $client->oda->selectCollection('documents.files');
 	/* TODO Abfragekriterien überprüfen */
-    return $collection->find(['metadata.owner' => new \MongoDB\BSON\ObjectID('58c546bf4b1c1f1e7cd7508d')/*$UserID*/, 'metadata.categories' => $Categorie],['sort' => ['metadata.title' => 1]]);
+    //sichern return $collection->find(['metadata.owner' => new \MongoDB\BSON\ObjectID('58c546bf4b1c1f1e7cd7508d')/*$UserID*/, 'metadata.categories' => $Categorie],['sort' => ['metadata.title' => 1]]);
+  return $collection->aggregate([
+  ['$match' => ['metadata.owner' => new \MongoDB\BSON\ObjectID($UserID), 
+                'metadata.categories' => $Categorie]],
+  ['$sort' => ['metadata.title' => 1]],
+  ['$lookup' => ['from' => 'users', 'localField' => 'metadata.owner', 'foreignField' => '_id', 'as' => 'metadata.owner']],
+  ['$project' => ['metadata.title' => 1,
+                  'metadata.author' => 1,
+                  'metadata.categories' => 1,
+                  'metadata.tags' => 1,
+                  'metadata.owner' => ['$map' => [
+                       'input' => '$metadata.owner',
+                       'as' => 'owner',
+                       'in' => ['$concat' => ['$$owner.firstname', ' ', '$$owner.lastname']]
+                       ]
+                  ],
+                  'metadata.share' => 1,
+                  'metadata.lastmodified' => 1,
+                  'metadata.created' => 1]]
+  ]);
 
 /*    $Documents = array();
     $i = 0;
@@ -127,8 +158,8 @@ function SaveOneDocument($Post) {
   $tags = preg_split('/\r\n|[\r\n]/', $Post['tags']);
   $owner = new MongoDB\BSON\ObjectID($_SESSION['user_id']);
   $share = preg_split('/\r\n|[\r\n]/', $Post['share']);
-  $lastmodified = ['by' => $owner, 'date' => new MongoDB\BSON\UTCDateTime()];
-  $created = ['by' => $owner, 'date' => new MongoDB\BSON\UTCDateTime()];
+  $lastmodified = ['by' => new MongoDB\BSON\ObjectID($_SESSION['user_id']), 'date' => new MongoDB\BSON\UTCDateTime()];
+  $created = ['by' => new MongoDB\BSON\ObjectID($_SESSION['user_id']), 'date' => new MongoDB\BSON\UTCDateTime()];
   
   $filename = pathinfo($_FILES['datei']['name'], PATHINFO_FILENAME);
   $extension = strtolower(pathinfo($_FILES['datei']['name'], PATHINFO_EXTENSION));
@@ -147,7 +178,7 @@ function SaveOneDocument($Post) {
   
   //Datenbank
   global $client;
-  $metadata = ['metadata' => ['title' => $title, 'author' => $author, 'categories' => $categories, 'tags' => $tags, 'owner' => $owner, 'share' => $share, 'lastmodified' => $lastmodified, 'created' => $created ] ];
+  $metadata = ['metadata' => ['title' => $title, 'author' => $author, 'categories' => $categories, 'tags' => $tags, 'owner' => [$owner], 'share' => $share, 'lastmodified' => $lastmodified, 'created' => $created ] ];
   $bucket = $client->oda->selectGridFSBucket(['bucketName' => 'documents']);
   $file = fopen($_FILES['datei']['tmp_name'], 'rb');
   $bucket->uploadFromStream($filename.'.'.$extension, $file, $metadata);
