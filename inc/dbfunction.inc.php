@@ -116,25 +116,49 @@ function GetDocuments($UserID, $Categorie) {
   global $client;
   $collection = $client->oda->selectCollection('documents.files');
 	/* TODO Abfragekriterien überprüfen */
-    //sichern return $collection->find(['metadata.owner' => new \MongoDB\BSON\ObjectID('58c546bf4b1c1f1e7cd7508d')/*$UserID*/, 'metadata.categories' => $Categorie],['sort' => ['metadata.title' => 1]]);
   return $collection->aggregate([
   ['$match' => ['metadata.owner' => new \MongoDB\BSON\ObjectID($UserID), 
                 'metadata.categories' => $Categorie]],
-  ['$sort' => ['metadata.title' => 1]],
   ['$lookup' => ['from' => 'users', 'localField' => 'metadata.owner', 'foreignField' => '_id', 'as' => 'metadata.owner']],
+  ['$lookup' => ['from' => 'users', 'localField' => 'metadata.share', 'foreignField' => '_id', 'as' => 'metadata.share']],
+  ['$lookup' => ['from' => 'users', 'localField' => 'metadata.lastmodified.by', 'foreignField' => '_id', 'as' => 'metadata.lastmodified.by']],
+  ['$lookup' => ['from' => 'users', 'localField' => 'metadata.created.by', 'foreignField' => '_id', 'as' => 'metadata.created.by']],
   ['$project' => ['metadata.title' => 1,
                   'metadata.author' => 1,
                   'metadata.categories' => 1,
                   'metadata.tags' => 1,
-                  'metadata.owner' => ['$map' => [
+                  'metadata.owner' => [ '$map' => [
                        'input' => '$metadata.owner',
                        'as' => 'owner',
                        'in' => ['$concat' => ['$$owner.firstname', ' ', '$$owner.lastname']]
                        ]
                   ],
-                  'metadata.share' => 1,
-                  'metadata.lastmodified' => 1,
-                  'metadata.created' => 1]]
+                  'metadata.share' => [ '$map' => [
+                       'input' => '$metadata.share',
+                       'as' => 'share',
+                       'in' => ['$concat' => ['$$share.firstname', ' ', '$$share.lastname']]
+                       ]
+                  ],
+                  'metadata.lastmodified.by' => [ '$arrayElemAt' => [ ['$map' => [
+                       'input' => '$metadata.lastmodified.by',
+                       'as' => 'lmby',
+                       'in' => ['$concat' => ['$$lmby.firstname', ' ', '$$lmby.lastname']]
+                       ]], 0]
+                  ],
+                  'metadata.lastmodified.date' => [ '$dateToString' => [
+                        'format' => '%d.%m.%Y %H:%M:%S',
+                        'date' => '$metadata.lastmodified.date']
+                  ],
+                  'metadata.created.by' => [ '$arrayElemAt' => [ ['$map' => [
+                       'input' => '$metadata.created.by',
+                       'as' => 'crby',
+                       'in' => ['$concat' => ['$$crby.firstname', ' ', '$$crby.lastname']]
+                       ]], 0]
+                  ],
+                  'metadata.created.date' => [ '$dateToString' => [
+                        'format' => '%d.%m.%Y %H:%M:%S',
+                        'date' => '$metadata.created.date']
+                  ]]]
   ]);
 
 /*    $Documents = array();
