@@ -118,15 +118,18 @@ function PrintDocumentTable($UserID, $Categorie) {
   /* TODO Besitzer und Datum als Klartext anzeigen */
   foreach($Documents as $document) {
 /*highlight_string("<?php\n\$data =\n" . var_export($document, true) . ";\n?>");*/
-    echo '<tr> 
+/*    echo '<tr> 
 	    <td>' . $document['metadata']['title'] . '</td>
-	    <td>' . $document['metadata']['author'] . '</td>';
-    PrintArrayAsCell($document['metadata']['categories']);
-    PrintArrayAsCell($document['metadata']['tags']);
-    PrintArrayAsCell($document['metadata']['owner']);
-    PrintArrayAsCell($document['metadata']['share']);
-    PrintArrayAsCell($document['metadata']['lastmodified']);
-    PrintArrayAsCell($document['metadata']['created']);
+	    <td>' . $document['metadata']['author'] . '</td>';*/
+    echo '<tr>';
+    PrintStringAsCellWhithLink($document['metadata']['title'], $document['_id']);
+    PrintStringAsCellWhithLink($document['metadata']['author'], $document['_id']);
+    PrintArrayAsCellWhithLink($document['metadata']['categories'], $document['_id']);
+    PrintArrayAsCellWhithLink($document['metadata']['tags'], $document['_id']);
+    PrintArrayAsCellWhithLink($document['metadata']['owner'], $document['_id']);
+    PrintArrayAsCellWhithLink($document['metadata']['share'], $document['_id']);
+    PrintArrayAsCellWhithLink($document['metadata']['lastmodified'], $document['_id']);
+    PrintArrayAsCellWhithLink($document['metadata']['created'], $document['_id']);
     echo '</tr>';
   }
 }
@@ -199,6 +202,26 @@ function PrintArrayAsCell($Array) {
 	echo '</td>';
 }
 
+function PrintArrayAsCellWhithLink($Array, $Link) {
+	echo '<td>
+	        <a href="documentdetail.php?id=' . $Link . '">';
+	$out = '';
+    foreach ($Array as $key) {
+        // Kein Trennstring vor dem allerersten Wert, daher der bedingte Ausdruck.
+        $out .= ($out!=='' ? ", $key" : "$key");
+    }
+    echo $out;
+	echo '</a>
+	    </td>';
+}
+
+function PrintStringAsCellWhithLink($String, $Link) {
+	echo '<td>
+	        <a href="documentdetail.php?id=' . $Link . '">
+		   ' . $String . '	
+                </a>
+	    </td>';
+}
 /* Backup
   function PrintRow($Row, $LastRow) {
 	echo "<hr>";

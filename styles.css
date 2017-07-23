@@ -104,6 +104,11 @@ div#content table th {
     color: white;
 }
 
+div#content table td a {
+    display: block;
+    padding: 0px;
+}
+
 div#navigation {
     background:#F0F0F0;
     float:left;
