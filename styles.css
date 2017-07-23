@@ -85,7 +85,7 @@ div#content table {
 
 div#content table td, div#content table th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 0px;
 }
 
 div#content table tr:nth-child(even) {
@@ -106,7 +106,7 @@ div#content table th {
 
 div#content table td a {
     display: block;
-    padding: 0px;
+    padding: 8px;
 }
 
 div#navigation {
