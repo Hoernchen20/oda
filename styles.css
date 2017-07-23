@@ -99,6 +99,7 @@ div#content table tr:hover {
 div#content table th {
     padding-top: 12px;
     padding-bottom: 12px;
+    padding-left: 8px;
     text-align: left;
     background-color: #4CAF50;
     color: white;
