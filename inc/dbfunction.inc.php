@@ -76,11 +76,11 @@ function GetUserPassword($user_id) {
     return $query;
 }
 
-function GetUserCategories($user_name) {
+function GetUserCategories($UserID) {
     global $client;
     $collection = $client->oda->selectCollection('documents.files');
     $query = $collection->aggregate([
-        ['$match' => ['metadata.owner' => new \MongoDB\BSON\ObjectID('58c546bf4b1c1f1e7cd7508d') ] ],
+        ['$match' => ['metadata.owner' => new \MongoDB\BSON\ObjectID($UserID) ] ],
         ['$unwind' => '$metadata.categories' ],
         ['$group' => ['_id' => '$metadata.categories'] ],
         ['$sort' => ['_id' => 1] ]
@@ -94,11 +94,11 @@ function GetUserCategories($user_name) {
     return $categories;
 }
 
-function GetShareCategories($user_name) {
+function GetShareCategories($UserID) {
     global $client;
     $collection = $client->oda->selectCollection('documents.files');
     $query = $collection->aggregate([
-        ['$match' => ['metadata.share' => new \MongoDB\BSON\ObjectID('58c546bf4b1c1f1e7cd7508d') ] ],
+        ['$match' => ['metadata.share' => new \MongoDB\BSON\ObjectID($UserID) ] ],
         ['$unwind' => '$metadata.categories' ],
         ['$group' => ['_id' => '$metadata.categories'] ],
         ['$sort' => ['_id' => 1] ]
