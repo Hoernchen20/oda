@@ -123,7 +123,7 @@ function PrintDocumentTable($UserID, $Categorie) {
 	    <td>' . $document['metadata']['author'] . '</td>';*/
     echo '<tr>';
     PrintStringAsCellWhithLink($document['metadata']['title'], $document['_id']);
-    PrintStringAsCellWhithLink($document['metadata']['author'], $document['_id']);
+    PrintArrayAsCellWhithLink($document['metadata']['author'], $document['_id']);
     PrintArrayAsCellWhithLink($document['metadata']['categories'], $document['_id']);
     PrintArrayAsCellWhithLink($document['metadata']['tags'], $document['_id']);
     PrintArrayAsCellWhithLink($document['metadata']['owner'], $document['_id']);

@@ -10,6 +10,14 @@ sec_session_start();
     <title>OpenDocumentArchiv - Upload</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="text/JavaScript" src="js/jquery-3.2.1.min.js"></script>
+    <script>
+      $( function() {
+        $( "author" ).autocomplete({
+          source: "inc/getauthor.php"
+        });
+      } );
+    </script>    
   </head>
   <body>
     <div id="container">
@@ -34,7 +42,7 @@ sec_session_start();
               <label for="title" >Titel</label>
               <input type="text" id="title" name="title">
               <label for="author">Author</label>
-              <input type="text" id="author" name="author">
+              <textarea id="author" id="author" name="author"></textarea>
               <label for="categories">Kategorien</label>
               <textarea id ="categories" name="categories"></textarea>
               <label for="tags">Tags</label>

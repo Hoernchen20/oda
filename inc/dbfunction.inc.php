@@ -177,7 +177,7 @@ function GetDocuments($UserID, $Categorie) {
 
 function SaveOneDocument($Post) {
   $title = $Post['title'];
-  $author = $Post['author'];
+  $author = preg_split('/\r\n|[\r\n]/', $Post['author']) ;
   $categories = preg_split('/\r\n|[\r\n]/', $Post['categories']);
   $tags = preg_split('/\r\n|[\r\n]/', $Post['tags']);
   $owner = new MongoDB\BSON\ObjectID($_SESSION['user_id']);
