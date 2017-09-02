@@ -61,31 +61,7 @@ sec_session_start();
     <script type="text/javascript" src="js/jquery-ui-1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
       $( function() {
-            var availableTags = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
-      const MinInputLength = 2;
+        const MinInputLength = 2;
         function split( val ) {
           return val.split( "\n" );
         }
@@ -93,7 +69,81 @@ sec_session_start();
           return split( term ).pop();
         }
         
-            $( "#author" )
+        $( "#author" )
+          // don't navigate away from the field on tab when selecting an item
+          .on( "keydown", function( event ) {
+            if ( event.keyCode === $.ui.keyCode.TAB &&
+                $( this ).autocomplete( "instance" ).menu.active ) {
+              event.preventDefault();
+            }
+          })
+          .autocomplete({
+            minLength: MinInputLength,
+            source: function(request, response) {
+              $.getJSON( "inc/getauthor.php", function(data) {
+              // delegate back to autocomplete, but extract the last term
+              var resp;
+              var lastTerm = extractLast(request.term);
+              if (lastTerm.length >= MinInputLength) {
+                response($.ui.autocomplete.filter(data, lastTerm));
+              }}
+            )},
+            
+            focus: function() {
+              // prevent value inserted on focus
+              return false;
+            },
+            select: function( event, ui ) {
+              var terms = split( this.value );
+              // remove the current input
+              terms.pop();
+              // add the selected item
+              terms.push( ui.item.value );
+              // add placeholder to get the comma-and-space at the end
+              terms.push( "" );
+              this.value = terms.join( "\r\n" );
+              return false;
+            }
+          });
+          
+          $( "#categories" )
+            // don't navigate away from the field on tab when selecting an item
+            .on( "keydown", function( event ) {
+              if ( event.keyCode === $.ui.keyCode.TAB &&
+                  $( this ).autocomplete( "instance" ).menu.active ) {
+                event.preventDefault();
+              }
+            })
+            .autocomplete({
+              minLength: MinInputLength,
+              source: function(request, response) {
+                $.getJSON( "inc/getcategories.php", function(data) {
+                // delegate back to autocomplete, but extract the last term
+                var resp;
+                var lastTerm = extractLast(request.term);
+                if (lastTerm.length >= MinInputLength) {
+                  response($.ui.autocomplete.filter(data, lastTerm));
+                }}
+              )},
+              
+              focus: function() {
+                // prevent value inserted on focus
+                return false;
+              },
+              select: function( event, ui ) {
+                var terms = split( this.value );
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push( ui.item.value );
+                // add placeholder to get the comma-and-space at the end
+                terms.push( "" );
+                this.value = terms.join( "\r\n" );
+                return false;
+              }
+            });
+            
+            $( "#tags" )
               // don't navigate away from the field on tab when selecting an item
               .on( "keydown", function( event ) {
                 if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -104,7 +154,7 @@ sec_session_start();
               .autocomplete({
                 minLength: MinInputLength,
                 source: function(request, response) {
-                  $.getJSON( "inc/getauthor.php", function(data) {
+                  $.getJSON( "inc/gettags.php", function(data) {
                   // delegate back to autocomplete, but extract the last term
                   var resp;
                   var lastTerm = extractLast(request.term);
