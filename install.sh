@@ -1,19 +1,6 @@
 #!/bin/bash
 #install mongodb, nginx, php-fpm
 
-#MongoDB
-if [[ -f $(which mongod 2>/dev/null) ]]
-	then
-		echo "MongoDB is already installed"
-	else
-		echo "Installing MongoDB"
-		sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
-		echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
-		sudo apt-get update
-		sudo apt-get install -y mongodb-org
-		echo "MongoDB installed"
-fi
-
 #nginx
 if [[ -f $(which nginx 2>/dev/null) ]]
 	then
@@ -50,13 +37,35 @@ if [[ -f $(which php-fpm7.0 2>/dev/null) ]]
 		echo "php-fpm7.0 is already installed"
 	else
 		echo "Installing php-fpm7.0"
-		sudo apt-get -y install nginx php7.0 php7.0-fpm
+		sudo apt-get -y install nginx php7.0 php7.0-fpm php7.0-dev php-pear pkg-config
 		sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.original
 		sudo cp default /etc/nginx/sites-available/
 		echo "php-fpm7.0 installed"
 fi
 
+#MongoDB
+if [[ -f $(which mongod 2>/dev/null) ]]
+	then
+		echo "MongoDB is already installed"
+	else
+		echo "Installing MongoDB"
+		sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
+		echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
+		sudo apt-get update
+		sudo apt-get install -y mongodb-org composer
+		sudo pecl install mongodb
+		echo "extension=mongodb.so" | sudo tee -a /etc/php/7.0/fpm/php.ini
+		echo "extension=mongodb.so" | sudo tee -a /etc/php/7.0/cli/php.ini
+		cd /var/www/html/
+		sudo composer require mongodb/mongodb
+		echo "MongoDB installed"
+fi
+
+sudo cp -R site/* /var/www/html/
+sudo chown -R www-data /var/www/html
+sudo chgrp -R www-data /var/www/html
+
 #start services
-sudo systemctl start mongod.service
-sudo systemctl start php7.0-fpm.service
-sudo systemctl start nginx.service
+sudo systemctl restart mongod.service
+sudo systemctl restart php7.0-fpm.service
+sudo systemctl restart nginx.service

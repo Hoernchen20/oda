@@ -1,6 +1,6 @@
 <?php
-    require '/var/www/html/login/vendor/autoload.php'; // include Composer's autoloader
+    require '/var/www/html/vendor/autoload.php'; // include Composer's autoloader
     
-    $client = new MongoDB\Client("mongodb://192.168.50.20:27017");
+    $client = new MongoDB\Client("mongodb://127.0.0.1:27017");
     $collection = $client->oda->fs;
 ?>
