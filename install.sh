@@ -37,7 +37,7 @@ if [[ -f $(which php-fpm7.0 2>/dev/null) ]]
 		echo "php-fpm7.0 is already installed"
 	else
 		echo "Installing php-fpm7.0"
-		sudo apt-get -y install nginx php7.0 php7.0-fpm php7.0-dev php-pear pkg-config
+		sudo apt-get -y install nginx php7.0 php7.0-fpm php7.0-dev php7.0-mbstring php-pear pkg-config
 		sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.original
 		sudo cp default /etc/nginx/sites-available/
 		echo "php-fpm7.0 installed"
