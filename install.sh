@@ -21,6 +21,7 @@ if [[ -f $(which nginx 2>/dev/null) ]]
 		sudo openssl dhparam -outform PEM -out /etc/nginx/ssl/dhparam2048.pem 2048
 		sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/private.key -out /etc/nginx/ssl/cert.crt
 		
+		sudo cp -R site/* /var/www/html/
 #		sudo apt-get update
 #		sudo apt-get install software-properties-common
 #		sudo add-apt-repository ppa:certbot/certbot
@@ -61,7 +62,6 @@ if [[ -f $(which mongod 2>/dev/null) ]]
 		echo "MongoDB installed"
 fi
 
-sudo cp -R site/* /var/www/html/
 sudo chown -R www-data /var/www/html
 sudo chgrp -R www-data /var/www/html
 
